@@ -1,8 +1,6 @@
 import './style.css'
+import { App } from './App'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <h1>Nenegana</h1>
-    <p>Japanese kana learning app</p>
-  </div>
-`
+const appContainer = document.querySelector<HTMLDivElement>('#app')!
+
+new App(appContainer)
