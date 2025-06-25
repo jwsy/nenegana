@@ -26,8 +26,6 @@ export function useSpeechRecognition(
     return !!(window.SpeechRecognition || window.webkitSpeechRecognition)
   })()
 
-  console.log('useSpeechRecognition: Browser support check:', hasBrowserSupport)
-
   // Initialize recognition
   const init = () => {
     if (recognition) return recognition
@@ -51,12 +49,7 @@ export function useSpeechRecognition(
         statusChangeCallback?.(status)
       },
       onError: (error: string) => {
-        // Only log unexpected errors, not network issues which are common
-        if (!error.includes('unavailable') && !error.includes('not available')) {
-          console.warn('Speech recognition error:', error)
-        }
-        
-        // For common permission errors, provide user-friendly guidance
+        // For permission errors, provide user-friendly guidance
         if (error.includes('not-allowed') || error.includes('denied')) {
           console.info('Microphone access denied. Please allow microphone access in your browser settings.')
         }
