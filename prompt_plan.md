@@ -203,7 +203,7 @@ Return: modified/added files and a screenshot simulation (ASCII tree ok).
 
 ---
 
-### Prompt 2 — Practice Cards
+### Prompt 2 — Practice Cards ✅ COMPLETED
 
 ```text
 Home screen is live.
