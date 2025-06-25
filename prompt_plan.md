@@ -246,7 +246,7 @@ Return: diff or full files for new classes and views.
 
 ---
 
-### Prompt 4 — Speech Hook
+### Prompt 4 — Speech Hook ✅ COMPLETED
 
 ```text
 Quiz engine skeleton is merged.
