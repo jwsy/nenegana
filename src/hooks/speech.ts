@@ -84,9 +84,15 @@ export class SpeechRecognition {
       return false
     }
 
-    this.recognition = new SpeechRecognitionConstructor()
-    this.setupRecognition()
-    return true
+    try {
+      this.recognition = new SpeechRecognitionConstructor()
+      this.setupRecognition()
+      return true
+    } catch (error) {
+      this.setStatus('unsupported')
+      this.options.onError?.('Speech recognition not available')
+      return false
+    }
   }
 
   private setupRecognition(): void {

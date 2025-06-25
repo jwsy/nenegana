@@ -62,6 +62,9 @@ function createQuizInterface(container: HTMLElement, quizSession: QuizSession): 
     handleSpeechResult(transcript, isCorrect)
   })
 
+  // If speech recognition is not supported from the start, don't show speech UI
+  const shouldUseSpeech = speechRecognition.isSupported
+
   function handleSpeechResult(transcript: string, isCorrect: boolean) {
     if (hasAnswered || !currentKana) return
     
@@ -149,7 +152,7 @@ function createQuizInterface(container: HTMLElement, quizSession: QuizSession): 
 
           <!-- Speech Recognition Controls -->
           <div class="space-y-4">
-            ${speechRecognition.isSupported ? `
+            ${shouldUseSpeech ? `
               <!-- Listening Status -->
               <div id="listening-status" class="min-h-[80px] flex flex-col items-center justify-center space-y-2">
                 <div class="text-4xl animated-mic ${speechRecognition.isListening ? 'listening' : ''}">🎤</div>
@@ -247,11 +250,13 @@ function createQuizInterface(container: HTMLElement, quizSession: QuizSession): 
     const feedback = container.querySelector('#feedback') as HTMLElement
     
     homeBtn.addEventListener('click', () => {
-      speechRecognition.stop()
+      if (shouldUseSpeech) {
+        speechRecognition.stop()
+      }
       router.navigate('#/home')
     })
 
-    if (speechRecognition.isSupported) {
+    if (shouldUseSpeech) {
       const listenBtn = container.querySelector('#listen-btn') as HTMLButtonElement
       const manualBtn = container.querySelector('#manual-btn') as HTMLButtonElement
       const manualInput = container.querySelector('#manual-input') as HTMLElement
@@ -325,7 +330,7 @@ function createQuizInterface(container: HTMLElement, quizSession: QuizSession): 
 
       // Auto-start listening when question appears (with longer delay for stability)
       setTimeout(() => {
-        if (!hasAnswered && speechRecognition.isSupported) {
+        if (!hasAnswered && shouldUseSpeech) {
           const started = speechRecognition.start()
           if (!started) {
             console.warn('Failed to auto-start speech recognition')
@@ -385,7 +390,9 @@ function createQuizInterface(container: HTMLElement, quizSession: QuizSession): 
 
     // Handle next question
     nextBtn.addEventListener('click', () => {
-      speechRecognition.stop()
+      if (shouldUseSpeech) {
+        speechRecognition.stop()
+      }
       const hasMore = quizSession.next()
       if (hasMore) {
         hasAnswered = false

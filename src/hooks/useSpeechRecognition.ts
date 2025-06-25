@@ -44,7 +44,11 @@ export function useSpeechRecognition(
         statusChangeCallback?.(status)
       },
       onError: (error: string) => {
-        console.warn('Speech recognition error:', error)
+        // Only log unexpected errors, not network issues which are common
+        if (!error.includes('unavailable') && !error.includes('not available')) {
+          console.warn('Speech recognition error:', error)
+        }
+        
         // For common permission errors, provide user-friendly guidance
         if (error.includes('not-allowed') || error.includes('denied')) {
           console.info('Microphone access denied. Please allow microphone access in your browser settings.')
