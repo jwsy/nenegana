@@ -275,13 +275,11 @@ function createQuizInterface(container: HTMLElement, quizSession: QuizSession): 
           micIcon.classList.add('listening')
           listenBtn.textContent = '🎤 Listening...'
           listenBtn.disabled = true
-        } else if (status === 'unsupported') {
-          // Speech recognition became unavailable during use - show text input
+        } else if (status === 'unsupported' || status === 'error') {
+          // Show error state but keep speech controls available
           micIcon.classList.remove('listening')
-          manualInput.classList.remove('hidden')
-          listenBtn.classList.add('hidden')
-          manualBtn.classList.add('hidden')
-          setTimeout(() => answerInput?.focus(), 100)
+          listenBtn.textContent = '🎤 Try Again'
+          listenBtn.disabled = hasAnswered
         } else {
           micIcon.classList.remove('listening')
           listenBtn.textContent = '🎤 Start Listening'

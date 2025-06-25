@@ -144,35 +144,32 @@ export class SpeechRecognition {
           errorMessage = 'No microphone found. Please check your microphone and try again.'
           break
         case 'network':
-          errorMessage = 'Speech recognition unavailable. Using text input instead.'
-          // Network errors often mean the service is unavailable - disable speech recognition
-          this.setStatus('unsupported')
-          this.options.onError?.(errorMessage)
-          return
+          errorMessage = 'Network error. Please try again.'
+          break
         case 'service-not-allowed':
-          errorMessage = 'Speech recognition service not available. Using text input instead.'
-          this.setStatus('unsupported')
-          this.options.onError?.(errorMessage)
-          return
+          errorMessage = 'Speech service unavailable. Please try again.'
+          break
         case 'bad-grammar':
         case 'language-not-supported':
-          errorMessage = 'Language not supported. Using text input instead.'
+          errorMessage = 'Language not supported. Use text input instead.'
           this.setStatus('unsupported')
           this.options.onError?.(errorMessage)
           return
         default:
-          errorMessage = `Speech recognition error: ${event.error}. Using text input instead.`
-          // For unknown errors, disable speech recognition to prevent loops
-          this.setStatus('unsupported')
-          this.options.onError?.(errorMessage)
-          return
+          errorMessage = `Speech error: ${event.error}. Please try again.`
+          break
       }
 
       this.setStatus('error')
       this.options.onError?.(errorMessage)
       this.stop()
       
-      // For retryable errors, we just stop but don't disable completely
+      // Reset to idle after showing error for 2 seconds
+      setTimeout(() => {
+        if (this.status === 'error') {
+          this.setStatus('idle')
+        }
+      }, 2000)
     }
 
     this.recognition.onend = () => {
