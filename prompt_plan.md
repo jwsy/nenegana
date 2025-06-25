@@ -225,7 +225,7 @@ Return: new/updated files + brief explanation of state flow.
 
 ---
 
-### Prompt 3 — Quiz Engine v1
+### Prompt 3 — Quiz Engine v1 ✅ COMPLETED
 
 ```text
 Practice mode works.
