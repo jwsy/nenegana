@@ -79,16 +79,20 @@ export class SpeechRecognition {
       window.webkitSpeechRecognition
 
     if (!SpeechRecognitionConstructor) {
+      console.log('Speech recognition: API not found in browser')
       this.setStatus('unsupported')
       this.options.onError?.('Speech recognition not supported in this browser')
       return false
     }
 
     try {
+      console.log('Speech recognition: Creating recognition instance...')
       this.recognition = new SpeechRecognitionConstructor()
       this.setupRecognition()
+      console.log('Speech recognition: Successfully initialized')
       return true
     } catch (error) {
+      console.log('Speech recognition: Failed to create instance:', error)
       this.setStatus('unsupported')
       this.options.onError?.('Speech recognition not available')
       return false
@@ -192,27 +196,34 @@ export class SpeechRecognition {
   }
 
   start(): boolean {
+    console.log('Speech recognition: start() called, status:', this.status)
+    
     if (!this.recognition) {
+      console.log('Speech recognition: No recognition instance available')
       this.setStatus('unsupported')
       return false
     }
 
     if (this.status === 'listening') {
+      console.log('Speech recognition: Already listening')
       return true
     }
 
     // Stop any existing recognition first
     if (this.status !== 'idle') {
+      console.log('Speech recognition: Stopping existing recognition, status was:', this.status)
       this.stop()
     }
 
     try {
+      console.log('Speech recognition: Attempting to start...')
       this.clearTimeout()
       
       // Set timeout first, then start
       if (this.options.timeout) {
         this.timeoutId = window.setTimeout(() => {
           if (this.status === 'listening') {
+            console.log('Speech recognition: Timeout reached')
             this.setStatus('timeout')
             this.stop()
           }
@@ -220,10 +231,12 @@ export class SpeechRecognition {
       }
 
       this.recognition.start()
+      console.log('Speech recognition: start() called successfully')
       // Note: Don't set status to 'listening' here - let onstart handle it
       
       return true
     } catch (error) {
+      console.log('Speech recognition: start() failed:', error)
       this.clearTimeout()
       this.setStatus('error')
       

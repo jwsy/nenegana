@@ -64,6 +64,7 @@ function createQuizInterface(container: HTMLElement, quizSession: QuizSession): 
 
   // If speech recognition is not supported from the start, don't show speech UI
   const shouldUseSpeech = speechRecognition.isSupported
+  console.log('QuizView: Speech recognition supported:', shouldUseSpeech)
 
   function handleSpeechResult(transcript: string, isCorrect: boolean) {
     if (hasAnswered || !currentKana) return

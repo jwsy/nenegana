@@ -21,6 +21,13 @@ export function useSpeechRecognition(
   let currentConfidence = 0
   let statusChangeCallback: ((status: SpeechStatus) => void) | null = null
 
+  // Check browser support independently of service availability
+  const hasBrowserSupport = (() => {
+    return !!(window.SpeechRecognition || window.webkitSpeechRecognition)
+  })()
+
+  console.log('useSpeechRecognition: Browser support check:', hasBrowserSupport)
+
   // Initialize recognition
   const init = () => {
     if (recognition) return recognition
@@ -88,7 +95,7 @@ export function useSpeechRecognition(
     get transcript() { return currentTranscript },
     get confidence() { return currentConfidence },
     get isListening() { return currentStatus === 'listening' },
-    get isSupported() { return init().isSupported() },
+    get isSupported() { return hasBrowserSupport },
     start,
     stop,
     compareWithAnswer,
