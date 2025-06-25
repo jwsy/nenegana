@@ -184,7 +184,7 @@ Return: the full directory tree, plus the contents of `index.html`, `tailwind.co
 
 ---
 
-### Prompt 1 — Home Screen
+### Prompt 1 — Home Screen ✅ COMPLETED
 
 ```text
 The scaffold is merged on `main`.
