@@ -164,7 +164,7 @@ Below, each milestone is decomposed into **3–5 atomic tasks**. None should tak
 Copy‑paste each **Prompt N** into your favourite code‑gen model (e.g. GPT‑4o‑Code).
 Each prompt is self‑contained, references prior artifacts, and results in integrated code.
 
-### Prompt 0 — Scaffold
+### Prompt 0 — Scaffold ✅ COMPLETED
 
 ```text
 You are setting up the Nenegana repo from scratch.
